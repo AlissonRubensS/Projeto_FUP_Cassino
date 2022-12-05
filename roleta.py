@@ -5,14 +5,9 @@ Red = [1,3,18,7,5,21,9,16,24,14,12,26,30,27,19,32,23,25]
 
 mult = 0
 Coins = 1000
-
    
-Bet = {
-    'BetType':'none',
-    'BetValue': 0,
-      }
-    
 
+    
 def BetTypeColors(BetCoins, Color): # aposta por cores 2x    
     
     if BetCoins > 0 and BetCoins <= Coins: # checa se a aposta é valida
@@ -70,73 +65,46 @@ def ColorsCheck(): # wincondition das cores
     
     NumSort = randint(1,36) # sorteia os numeros
     
-    if  Bet['Color'] == 'Red': #condicional para caso seja vermelho, basicamente checa a key colors
-        if NumSort in Red:     #checa se o numero selecionado tá dentro da lista dos vermelhos
+    if  Bet['Color'] == 'Red' and NumSort in Red:
             Bet.update({'WinOrLose':'Win'}) #caso esteja ele adiciona o estado de vitoria
-
-        else: 
-            Bet.update({'WinOrLose':'Lose'}) # caso não esteja, ele adiciona a condiação como derrota.
-   
-    elif Bet['Color'] == 'Black':  # mesma coisa que o de cima
-        if NumSort in Black:
+    
+    elif Bet['Color'] == 'Black' and NumSort in Black:
             Bet.update({'WinOrLose':'Win'})
-
-        else:
-            Bet.update({'WinOrLose':'Lose'})
+    
+    else:
+        Bet.update({'WinOrLose':'Lose'})
 
     
 def EvenOrOddCheck(): # wincondition do impar ou par
 
     NumSort = randint(1,36) #sorteia o numero
     
-    if Bet['EvenorOdd'] == 'Even': # caso a aposta seja par
-        if NumSort % 2 == 0: #checa se o numero é par
-                   
+    if Bet['EvenorOdd'] == 'Even' and NumSort % 2 == 0: #checa se o numero é par   
             Bet.update({'WinOrLose':'Win'}) #se sim, ele adiciona a condição de vitoria
 
-        else:
-            Bet.update({'WinOrLose':'Lose'}) # caso não, ele adiciona a de derrota
-    
-    elif Bet['EvenorOdd'] == 'Odd': #o mesmo acontece com o impar
-        if NumSort %2 != 0:
-        
+    elif Bet['EvenorOdd'] == 'Odd' and NumSort %2 != 0:
             Bet.update({'WinOrLose': 'Win'})
-        
-        else:
-            Bet.update({'WinOrLose':'Lose'})
+            
+    else:
+         Bet.update({'WinOrLose':'Lose'})
   
 def Dozencheck(): #wincondition das duzias
     
     NumSort = randint(1,36) #sorteia  o numero
     print(NumSort)
-    if Bet['Dozen'] == 'First':
-        if 1 <= NumSort <= 12:
-            print('primeiro')
-            Bet.update({'WinOrLose':'Win'})
-            result()
-        else:
-            Bet.update({'WinOrLose':'Lose'})
-            result()
-    elif Bet['Dozen'] == 'Second':
+    if Bet['Dozen'] == 'First' and 1 <= NumSort <= 12: # checa a duzia apostada
+        Bet.update({'WinOrLose':'Win'}) # faz o update do dicionar
         
-        if 13 <= NumSort <= 24:
-            print('segundo')
-            Bet.update({'WinOrLose':'Win'})
-            result()
-        else:
-            Bet.update({'WinOrLose':'Lose'})
-            
-                
-    elif Bet['Dozen'] == 'Third':
-        if 24 < NumSort <= 36:
-            print('terceiro')
-            Bet.update({'WinOrLose':'Win'})
-
-        else:
-            Bet.update({'WinOrLose':'Lose'})   
-
-  
-
+    elif Bet['Dozen'] == 'Second' and 13 <= NumSort <= 24:
+        Bet.update({'WinOrLose':'Win'})
+    
+    elif Bet['Dozen'] == 'Third' and 25 <= NumSort <= 36:
+        Bet.update({'WinOrLose' : 'Win'})
+    
+    else:
+        Bet.update({'WinOrLose':'Lose'})
+        
+    
 def result():
     global mult, Coins
     
@@ -160,9 +128,17 @@ def result():
         Coins = Coins - Bet['BetValue']
         print(Coins)
     
+    else:
+        print('Erro')
+    
 def aposta():
+    global Bet
     BetType = int(input('a: '))
-
+    Bet = {
+    'BetType':'none',
+    'BetValue': 0,
+      }
+    
     if BetType == 1:
         Bet['BetType'] = 'Colors'
         BetTypeColors(100, 'Black')
