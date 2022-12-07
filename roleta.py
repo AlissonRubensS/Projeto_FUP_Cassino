@@ -5,7 +5,8 @@ Red = [1,3,18,7,5,21,9,16,24,14,12,26,30,27,19,32,23,25]
 
 mult = 0
 Coins = 1000
-   
+
+
 def BetTypeColors(BetCoins, Color): # aposta por cores 2x    
     
     if BetCoins > 0 and BetCoins <= Coins: # checa se a aposta é valida
@@ -18,9 +19,6 @@ def BetTypeColors(BetCoins, Color): # aposta por cores 2x
         elif Color == 'Black': #checa a cor apostada
             Bet.update({'Color':'Black'}) #joga a cor para o dicionario
             ColorsCheck() #chama a wincondition
-    
-        else:
-            Main() #chama novamente a aposta
 
 def BetTypeEvenOrOdd(BetCoins, EvenOrOdd):  #chama a função da aposta de impar ou par
     
@@ -34,10 +32,7 @@ def BetTypeEvenOrOdd(BetCoins, EvenOrOdd):  #chama a função da aposta de impar
         elif EvenOrOdd == 'Odd': # caso a aposta seja impar, faz a mesma coisa
             Bet.update({'EvenorOdd': 'Odd'})
             EvenOrOddCheck()
-       
-        else:
-            Main() #caso a aposta nãa seja definida chama a função de aposta novamente, para que seja resetado
-        
+
 def ColorsCheck(): # wincondition das cores
     
     NumSort = randint(1,36) # sorteia os numeros
@@ -66,15 +61,25 @@ def EvenOrOddCheck(): # wincondition do impar ou par
   
 def result(): #calcula o resultado
     global mult, Coins #chama as blobais, multiplicador e moedas
-    if Bet['BetType'] == 'Colors' and Bet['WinOrLose'] == 'Win': #checa o tipo de aposta e a condição de vitoria
-        mult = 2 #muda o multiplicador
-    elif Bet['BetType'] == 'EvenOrOdd' and Bet['WinOrLose'] == 'Win':   #checa o tipo de aposta e a condição de vitoria
-        mult = 4 #muda o multiplicador
-    else:
-        print('derrota')
 
+    if Bet['WinOrLose'] == 'Win':
+        if Bet['BetType'] == 'Colors': #checa o tipo de aposta e a condição de vitoria
+            mult = 2 #muda o multiplicador
+
+        elif Bet['BetType'] == 'EvenOrOdd':   #checa o tipo de aposta e a condição de vitoria
+            mult = 4 #muda o multiplicador
+
+        Coins = Coins + (mult * Bet['BetValue'])
+        print(Coins)
+    
+    else:
+         print('derrota')
+         Coins = Coins - Bet['BetValue']
+         print(Coins)
+
+    
 def Main(BetType): #Parte principal
-    global Bet #declara a global do dicionario
+    global Bet, NumSort #globais
 
     #define o dicionario
     Bet = {
@@ -95,6 +100,3 @@ def Main(BetType): #Parte principal
 
 while True:
         Main()
-
-
-        
