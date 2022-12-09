@@ -1,4 +1,3 @@
-from time import sleep
 import pygame       #Importa o Pygame
 import Jackpot      #Importa o arquivo "Jackpot.py" feito por João Vitor 
 import Blackjack    #Importa o arquivo "Blackjack.py" feito por Caio Lemos
@@ -38,12 +37,12 @@ def BlackjackWinner():
         txt = 'Você empatou com a mesa!'
 
     elif Blackjack.get_total_maos()[0] > Blackjack.get_total_maos()[1] and Blackjack.get_total_maos()[0] < 22 and Blackjack.get_total_maos()[1] < 22:
-        coin += bet * 2
+        coin -= bet
         SaveMoney()
         txt = 'A mesa ganhou!'
 
     elif Blackjack.get_total_maos()[0] < 22 and Blackjack.get_total_maos()[1] > 21:
-        coin += bet * 2
+        coin -= bet
         SaveMoney()
         txt = 'A mesa ganhou!'
     
@@ -177,18 +176,20 @@ while True:                                 #Laço principal
                 elif 755 <= mouse[0] <= 847 and 363 <= mouse[1] <= 414:     #Diminui a aposta em 100, apenas se isso não deixar menor que a aposta mim
                     if bet - 100 >= 10:
                         bet -= 100
-
+                
+                #Define o jogo
                 if 130 <= mouse[0] <= 340 and 600 <= mouse[1] <= 670:   #Botão "Sim"
                     if coin <= 9:
                         coin = 200
+                    elif coin - bet < coin:
+                        bet = 10
+
                     Blackjack.comprar_carta(1)
                     text_winner = BlackjackWinner()
-                    print(BlackjackWinner())
 
                 if 345 <= mouse[0] <= 555 and 603 <= mouse[1] <= 671:   #Botão "Não"
                     Blackjack.comprar_carta(0)
                     text_winner = BlackjackWinner()
-                    print(BlackjackWinner())
 
                 if 20 <= mouse[0] <= 85 and 15 <= mouse[1] <= 50:   #Botão de voltar.
                     screen.fill(white)
@@ -294,6 +295,11 @@ while True:                                 #Laço principal
                 
                 #Testa as apostas
                 if 110 <= mouse[0] <= 295 and 610 <= mouse[1] <= 660:       #Botão que aposta na cor vermelho
+                    if coin <= 9:
+                        coin = 200
+                    elif coin - bet < coin:
+                        bet = 10
+
                     game = roulette.roulette("Red", bet, coin)
                     print("game", game)
                     print(game[1])
@@ -308,6 +314,11 @@ while True:                                 #Laço principal
                     print("vermelho")
 
                 elif 325 <= mouse[0] <= 510 and 610 <= mouse[1] <= 660:     #Botão que aposta na cor preto
+                    if coin <= 9:
+                        coin = 200
+                    elif coin - bet < coin:
+                        bet = 10
+
                     game = roulette.roulette("Black", bet, coin)
                     print("game", game)
                     print(game[1])
@@ -322,6 +333,11 @@ while True:                                 #Laço principal
                     print("black")
 
                 elif 540 <= mouse[0] <= 720 and 610 <= mouse[1] <= 660:     #Botão que aposta nos números pares
+                    if coin <= 9:
+                        coin = 200
+                    elif coin - bet < coin:
+                        bet = 10
+
                     game = roulette.roulette("Odd", bet, coin)
                     print("game", game)
                     print(game[1])
@@ -336,6 +352,11 @@ while True:                                 #Laço principal
                     print("par")
 
                 elif 755 <= mouse[0] <= 940 and 610 <= mouse[1] <= 655:     #Botão que aposta nos números impares
+                    if coin <= 9:
+                        coin = 200
+                    elif coin - bet < coin:
+                        bet = 10
+
                     game = roulette.roulette("Even", bet, coin)
                     print("game", game)
                     print(game[1])
