@@ -1,10 +1,5 @@
 from random import *
 
-money = open("money.txt", "r")
-
-moeda = money.readline()
-moeda = int(moeda)
-
 baralho = []
 baralho_usavel = []
 
