@@ -10,75 +10,44 @@ def ReadMoney():                            #Ler o arquivo "money.txt" na pasta 
     money_file.close()
     return coin
 
+
 def SaveMoney():                            #Sobre escreve o arquivo "money.txt" na pasta raiz, inserindo o valor atual do dinheiro do jogador
     money_file = open("money.txt", "w")
     money_file.write(str(coin))
 
-#Função para decidir o vencedor do jogo Blackjack
-def BlackjackWinner():
-    global coin 
-    #Blackjack.get_total_maos()[1] => Mão do jogador
-    #Blackjack.get_total_maos()[0] => Mão da mesa
-
-    if Blackjack.get_total_maos()[1] > Blackjack.get_total_maos()[0] and Blackjack.get_total_maos()[1] < 22 and Blackjack.get_total_maos()[0] < 22:
-        coin += bet * 2
-        SaveMoney()
-        txt = 'Você ganhou!'
-
-    elif Blackjack.get_total_maos()[1] > 21 and Blackjack.get_total_maos()[0] > 21:
-        txt = 'Você e a mesa perderam!'
-
-    elif Blackjack.get_total_maos()[1] < 22 and Blackjack.get_total_maos()[0] > 21:
-        coin += bet * 2
-        SaveMoney()
-        txt = 'Você ganhou!'
-
-    elif Blackjack.get_total_maos()[1] == Blackjack.get_total_maos()[0] and Blackjack.get_total_maos()[1] < 22:
-        txt = 'Você empatou com a mesa!'
-
-    elif Blackjack.get_total_maos()[0] > Blackjack.get_total_maos()[1] and Blackjack.get_total_maos()[0] < 22 and Blackjack.get_total_maos()[1] < 22:
-        coin -= bet
-        SaveMoney()
-        txt = 'A mesa ganhou!'
-
-    elif Blackjack.get_total_maos()[0] < 22 and Blackjack.get_total_maos()[1] > 21:
-        coin -= bet
-        SaveMoney()
-        txt = 'A mesa ganhou!'
-    
-    return txt
 
 pygame.init()               #Inicia os métodos e classes do Pygame 
 
-#Variáveis globais 
+#Variáveis globais
 coin = ReadMoney()                                  #Armazena o valor da moeda
-bet = 10                                             #Aposta
-
-#Variaveis globais a serem usadas pelo pygame
+bet = 10                                            #Aposta
+                                                    
+#Variaveis globais a serem usadas pelo pygame       
 height = 1024                                       #Define a altura da janela
 width = 720                                         #Define a largura da janela 
 white = (255, 255, 255)                             #Define a cor branco em RGB
 black = (0, 0, 0)                                   #Define a cor preto em RGB
 top_left = (0, 0)                                   #Define a borda superior esquerda da janela
 small_font = pygame.font.SysFont('Georgia', 32)     #Define uma fonte para ser usada pelo pygame
-
-
+text_winner = ""                                    #Texto que vai escrever se o usuário perdeu ou ganhou
+total_player = 0
+total_dealer = 0
+total_hands = (0, 0)
 #Criando a tela
 screen = pygame.display.set_mode((height, width))   #Define a janela 
 pygame.display.set_caption("Cassino's")             #Muda o nome da janela 
 
 
 #Variáveis que controlam as telas do jogo
-menu = True                                 #Tela do menu
-blackjack_screen = False                    #Tela do Blackjack
-roulette_screen = False                     #Tela do Roulette
-jackpot_screen = False                      #Tela do Jackpot
+menu = True                                         #Tela do menu
+blackjack_screen = False                            #Tela do Blackjack
+roulette_screen = False                             #Tela do Roulette
+jackpot_screen = False                              #Tela do Jackpot
 
-text_winner = ""
-
-while True:                                 #Laço principal
+while True:                                         #Laço principal
     while menu == True:
-        text_winner = ""
+        text_winner = ""                            #Limpa a variável 
+        Blackjack.resetar_mãos()
 
         #Carregando as imagens para poder usar.
         background_menu = pygame.image.load("Sprites/sprites do menu/fundo.png")
@@ -136,8 +105,9 @@ while True:                                 #Laço principal
         text_bet = small_font.render(f'{bet}', True, black)
         screen.blit(text_bet, (840, 100))
         
-        total_hands = (Blackjack.get_total_maos())
-        text_hands = small_font.render(f"Sua mão soma {total_hands[1]}. E a mesa soma {total_hands[0]} ", True, black)
+        total_player = Blackjack.get_total_maos()[1]
+        total_dealer = Blackjack.get_total_maos()[0]
+        text_hands = small_font.render(f"Sua mão soma {total_player}. E a mesa soma {total_dealer} ", True, black)
         screen.blit(text_hands, (80, 270))
 
         text_money = small_font.render(f"{coin}", True, black)
@@ -176,6 +146,10 @@ while True:                                 #Laço principal
                 elif 755 <= mouse[0] <= 847 and 363 <= mouse[1] <= 414:     #Diminui a aposta em 100, apenas se isso não deixar menor que a aposta mim
                     if bet - 100 >= 10:
                         bet -= 100
+
+                elif 870 <= mouse[0] <= 952 and 366 <= mouse[1] <= 420:     #Aumenta a aposta em 100
+                    bet += 100
+                
                 
                 #Define o jogo
                 if 130 <= mouse[0] <= 340 and 600 <= mouse[1] <= 670:   #Botão "Sim"
@@ -183,19 +157,25 @@ while True:                                 #Laço principal
                         coin = 200
                     elif coin - bet < coin:
                         bet = 10
-
-                    Blackjack.comprar_carta(1)
-                    text_winner = BlackjackWinner()
-
+                    total_player  = Blackjack.comprar_carta(1)
+                  
+                    
                 if 345 <= mouse[0] <= 555 and 603 <= mouse[1] <= 671:   #Botão "Não"
-                    Blackjack.comprar_carta(0)
-                    text_winner = BlackjackWinner()
+                    total_player = Blackjack.comprar_carta(0)
+                    total_dealer =Blackjack.mesa_compra()
+                    text_winner = Blackjack.vencedor()
+                    
+                    if text_winner == "Você ganhou!":
+                        coin += bet * 2
+
+                    elif text_winner == "Perderam!" or text_winner == "Você perdeu!":
+                        coin -= bet
 
                 if 20 <= mouse[0] <= 85 and 15 <= mouse[1] <= 50:   #Botão de voltar.
                     screen.fill(white)
                     menu = True
                     blackjack_screen = False
-        
+
         pygame.display.flip()
 
     while jackpot_screen == True:
