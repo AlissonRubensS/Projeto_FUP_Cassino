@@ -153,6 +153,7 @@ while True:                                         #Laço principal
                 
                 #Define o jogo
                 if 130 <= mouse[0] <= 340 and 600 <= mouse[1] <= 670:   #Botão "Sim"
+                    print("SIM")
                     if coin <= 9:
                         coin = 200
                     elif coin - bet < coin:
@@ -161,16 +162,10 @@ while True:                                         #Laço principal
                   
                     
                 if 345 <= mouse[0] <= 555 and 603 <= mouse[1] <= 671:   #Botão "Não"
-                    total_player = Blackjack.comprar_carta(0)
-                    total_dealer =Blackjack.mesa_compra()
+                    print("NÃO")
+                    total_dealer = Blackjack.mesa_compra()
                     text_winner = Blackjack.vencedor()
                     
-                    if text_winner == "Você ganhou!":
-                        coin += bet * 2
-
-                    elif text_winner == "Perderam!" or text_winner == "Você perdeu!":
-                        coin -= bet
-
                 if 20 <= mouse[0] <= 85 and 15 <= mouse[1] <= 50:   #Botão de voltar.
                     screen.fill(white)
                     menu = True
