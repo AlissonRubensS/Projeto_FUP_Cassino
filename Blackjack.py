@@ -53,8 +53,8 @@ def vencedor():
 
 # Definindo a criação da mão do jogador:
 def mão_jogador():
-    # global mão_do_jogador   
-    # mão_do_jogador = []
+    global mão_do_jogador   
+    mão_do_jogador = [] 
 
     shuffle(baralho_usável)
 
@@ -64,13 +64,14 @@ def mão_jogador():
 
 # Definindo a mão da mesa:
 def mão_mesa():
-    # global mão_da_mesa      
-    # mão_da_mesa = []
+    global mão_da_mesa
+    mão_da_mesa = []
 
-    
-    shuffle(baralho_usável)
-    mão_da_mesa.append(baralho_usável.pop())
+    for i in range(0,2):
+        shuffle(baralho_usável)
+        mão_da_mesa.append(baralho_usável.pop())
     return mão_da_mesa
+
 
 # Definindo a compra de cartas do jogador:
 def comprar_carta(devecomprar):
@@ -82,7 +83,7 @@ def comprar_carta(devecomprar):
     total_jogador = cálculo_total(mão_do_jogador)
     print(f'Sua mão é {mão_do_jogador} com o total de {total_jogador}')
     print(f'A mão da mesa é {mão_da_mesa[0]}')
-
+    
     if total_jogador < 21:
         if devecomprar == 1:
             if len(baralho_usável) <= 5:
