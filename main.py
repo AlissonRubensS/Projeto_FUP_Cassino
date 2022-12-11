@@ -158,13 +158,16 @@ while True:                                         #Laço principal
                         coin = 200
                     elif coin - bet < coin:
                         bet = 10
-                    total_player  = Blackjack.comprar_carta(1)
-                  
+                    
+                    if total_player < 21:
+                        total_player  = Blackjack.comprar_carta(1)
+                    
                     
                 if 345 <= mouse[0] <= 555 and 603 <= mouse[1] <= 671:   #Botão "Não"
                     print("NÃO")
                     total_dealer = Blackjack.mesa_compra()
                     text_winner = Blackjack.vencedor()
+                    Blackjack.resetar_mãos()
                     
                 if 20 <= mouse[0] <= 85 and 15 <= mouse[1] <= 50:   #Botão de voltar.
                     screen.fill(white)
