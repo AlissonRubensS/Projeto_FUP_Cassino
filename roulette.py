@@ -105,6 +105,3 @@ def roulette(BetType, BetCoins, Money): #Parte principal
         BetTypeEvenOrOdd(BetCoins= BetCoins, EvenOrOdd= 'Odd')
     
     return result(Money)
-
-# for i in range(10):
-#     Main('Odd', 100, 1000)
