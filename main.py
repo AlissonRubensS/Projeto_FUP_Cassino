@@ -33,8 +33,8 @@ total_dealer = 0                                    #Total da soma da mão da me
 
 
 #Criando a tela
-screen = pygame.display.set_mode((1024, 720))       #Define a janela 
-pygame.display.set_caption("Cassino's")             #Muda o nome da janela 
+screen = pygame.display.set_mode((1024, 720))       #Define a janela por função do pygame
+pygame.display.set_caption("Cassino's")             #Muda o nome da janela por função do pygame
 
 
 #Variaveis que controlam as telas do jogo
